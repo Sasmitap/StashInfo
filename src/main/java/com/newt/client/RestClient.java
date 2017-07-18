@@ -16,7 +16,7 @@ public class RestClient {
 	public static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss Z").create();
 
 	public static final String JENKINS_URL = "http://localhost:8080/jenkins/job/DevopsSecurityDemo/";
-	public static final String STASH_COMMIT_URL = "http://localhost:7990/rest/api/1.0/projects/UIAM/repos/DevopsSecurityDemo/commits/";
+	public static final String STASH_COMMIT_URL = "https://github.com/Sasmitap/SecurityDemoPOC/commits/";
 	public static final String API_JSON = "/api/json";
 	public static final String CSV_FILE_PATH = "tools/changelog.csv";
 	public static final String ACCEPT_JSON = "application/json";
@@ -45,7 +45,7 @@ public class RestClient {
 				if (item.getCommitId() != null) {
 					newLine.append(item.getCommitId());
 					newLine.append(",");
-					newLine.append(getEmailIdByCommitId(item.getCommitId()));
+					//newLine.append(getEmailIdByCommitId(item.getCommitId()));
 					newLine.append(",");
 				} else {
 					newLine.append(",,");
@@ -76,7 +76,7 @@ public class RestClient {
 		}
 	}
 
-	public static String getEmailIdByCommitId(String commitId) {
+	/*public static String getEmailIdByCommitId(String commitId) {
 		if (commitId != null) {
 			System.out.println("Fetching Results from " + STASH_COMMIT_URL + commitId);
 			ClientResponse response = apiCall(STASH_COMMIT_URL + commitId, ACCEPT_JSON, true);
@@ -92,12 +92,12 @@ public class RestClient {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	public static ClientResponse apiCall(String URI, String acceptType, boolean isStash) {
 		Client client = Client.create();
 		if(isStash){
-			client.addFilter(new HTTPBasicAuthFilter("micros","micros123"));
+			client.addFilter(new HTTPBasicAuthFilter("pradhansasmita1991@gmail.com","@Sasmita32"));
 		}
 		WebResource webResource = client.resource(URI);
 

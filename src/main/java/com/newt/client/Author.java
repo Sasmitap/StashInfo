@@ -1,11 +1,15 @@
 package com.newt.client;
 
 public class Author {
-	private String absoluteUrl;
-	private String fullName;
+	
 	private String name;
 	private String email;
-	private String emailAddress;
+	private String date;
+	
+	//For STASH
+	/*private String absoluteUrl;
+	private String fullName;
+	private String emailAddress;*/
 	
 	public String getName() {
 		return name;
@@ -19,7 +23,14 @@ public class Author {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getAbsoluteUrl() {
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	/*public String getAbsoluteUrl() {
 		return absoluteUrl;
 	}
 	public void setAbsoluteUrl(String absoluteUrl) {
@@ -36,6 +47,6 @@ public class Author {
 	}
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
-	}
+	}*/
 	
 }

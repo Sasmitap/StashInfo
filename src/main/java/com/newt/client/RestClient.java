@@ -16,7 +16,11 @@ public class RestClient {
 	public static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss Z").create();
 
 	public static final String JENKINS_URL = "http://localhost:8080/jenkins/job/DevopsSecurityDemo/";
-	public static final String STASH_COMMIT_URL = "https://github.com/Sasmitap/SecurityDemoPOC/commits/";
+	public static final String STASH_COMMIT_URL = "https://api.github.com/repos/Sasmitap/SecurityDemoPOC/commits";
+	/**
+	 * Details For STASH
+	 */
+	//public static final String STASH_COMMIT_URL = "http://localhost:7990/rest/api/1.0/projects/UIAM/repos/DevopsSecurityDemo/commits/";
 	public static final String API_JSON = "/api/json";
 	public static final String CSV_FILE_PATH = "tools/changelog.csv";
 	public static final String ACCEPT_JSON = "application/json";
@@ -42,29 +46,34 @@ public class RestClient {
 				StringBuilder newLine = new StringBuilder();
 				newLine.append(BUILD_NUMBER);
 				newLine.append(",");
-				if (item.getCommitId() != null) {
-					newLine.append(item.getCommitId());
-					newLine.append(",");
-					//newLine.append(getEmailIdByCommitId(item.getCommitId()));
+				if (item.getSha() != null) {
+					newLine.append(item.getSha());
 					newLine.append(",");
 				} else {
 					newLine.append(",,");
 				}
-
-				if (item.getAuthor() != null && item.getAuthor().getFullName() != null) {
-					newLine.append(item.getAuthor().getFullName());
+				if(item.getAuthor() != null && item.getAuthor().getName() !=null){
+					newLine.append(item.getAuthor().getName());
+					newLine.append(",");
+				}else{
+					newLine.append(",,");
 				}
-				newLine.append(",");
 
-				if (item.getAffectedPaths() != null && !item.getAffectedPaths().isEmpty()) {
-					for (String files : item.getAffectedPaths()) {
-						newLine.append(files + ";");
-					}
+				if (item.getAuthor() != null && item.getAuthor().getEmail() != null) {
+					newLine.append(item.getAuthor().getEmail());
+					newLine.append(",");
+				}else{
+					newLine.append(",,");
 				}
-				newLine.append(",");
-
-				if (item.getComment() != null) {
-					newLine.append(item.getComment());
+				if (item.getMessage() != null) {
+					newLine.append(item.getMessage());
+					newLine.append(",");
+				}else{
+					newLine.append(",,");
+				}
+				if (item.getAuthor() != null && item.getAuthor().getDate() != null) {
+					newLine.append(item.getAuthor().getDate());
+					newLine.append(",");
 				}
 
 				System.out.println(newLine.toString());
@@ -76,28 +85,10 @@ public class RestClient {
 		}
 	}
 
-	/*public static String getEmailIdByCommitId(String commitId) {
-		if (commitId != null) {
-			System.out.println("Fetching Results from " + STASH_COMMIT_URL + commitId);
-			ClientResponse response = apiCall(STASH_COMMIT_URL + commitId, ACCEPT_JSON, true);
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-			}
-			Type objType = new TypeToken<CommitResponse>() {
-			}.getType();
-			String output = response.getEntity(String.class);
-			CommitResponse responseObj = gson.fromJson(output, objType);
-			if (responseObj.getAuthor() != null && responseObj.getAuthor().getEmailAddress() != null) {
-				return responseObj.getAuthor().getEmailAddress();
-			}
-		}
-		return null;
-	}*/
-
-	public static ClientResponse apiCall(String URI, String acceptType, boolean isStash) {
+	public static ClientResponse apiCall(String URI, String acceptType, boolean isGitHub) {
 		Client client = Client.create();
-		if(isStash){
-			client.addFilter(new HTTPBasicAuthFilter("pradhansasmita1991@gmail.com","@Sasmita32"));
+		if(isGitHub){
+			client.addFilter(new HTTPBasicAuthFilter("Sasmitap","@Sasmita32"));
 		}
 		WebResource webResource = client.resource(URI);
 
